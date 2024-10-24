@@ -1,41 +1,47 @@
-<?php require_once dirname(__FILE__) . '/../config.php'; ?>
 <!DOCTYPE HTML>
-<html lang="pl">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
 <head>
     <meta charset="utf-8" />
-    <title>Kalkulator Kredytowy</title>
+    <title>Kalkulator kredytowy</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 </head>
 <body>
 
-<form action="<?php echo APP_URL; ?>/app/calc.php" method="post">
-    <label for="loan_amount">Kwota kredytu: </label>
-    <input id="loan_amount" type="text" name="loan_amount" value="<?php echo htmlspecialchars($loan_amount); ?>" /><br />
+<div style="width:90%; margin: 2em auto;">
+    <a href="<?php print(_APP_ROOT); ?>/app/inne_chronione.php" class="pure-button">Inna chroniona strona</a>
+    <a href="<?php print(_APP_ROOT); ?>/app/security/logout.php" class="pure-button pure-button-active">Wyloguj</a>
+</div>
 
-    <label for="interest_rate">Oprocentowanie (w %): </label>
-    <input id="interest_rate" type="text" name="interest_rate" value="<?php echo htmlspecialchars($interest_rate); ?>" /><br />
+<div style="width:90%; margin: 2em auto;">
+    <form action="<?php print(_APP_ROOT); ?>/app/calc.php" method="post" class="pure-form pure-form-stacked">
+        <legend>Kalkulator Kredytowy</legend>
+        <fieldset>
+            <label for="id_amount">Kwota kredytu: </label>
+            <input id="id_amount" type="text" name="amount" value="<?php out($amount) ?>" />
+            <label for="id_interest">Oprocentowanie (% rocznie): </label>
+            <input id="id_interest" type="text" name="interest" value="<?php out($interestRate) ?>" />
+            <label for="id_term">Okres kredytowania (lata): </label>
+            <input id="id_term" type="text" name="term" value="<?php out($loanTerm) ?>" />
+        </fieldset>    
+        <input type="submit" value="Oblicz raty" class="pure-button pure-button-primary" />
+    </form>    
 
-    <label for="years">Liczba lat: </label>
-    <input id="years" type="text" name="years" value="<?php echo htmlspecialchars($years); ?>" /><br />
-
-    <input type="submit" value="Oblicz" />
-</form>
-
-<?php
-if (!empty($errors)) {
-    echo '<ul style="background-color: #fdd; padding: 10px;">';
-    foreach ($errors as $error) {
-        echo '<li>' . htmlspecialchars($error) . '</li>';
+    <?php
+    if (isset($messages) && count($messages) > 0) {
+        echo '<ol style="padding: 10px; border-radius: 5px; background-color: #f88; width:25em;">';
+        foreach ($messages as $msg) {
+            echo '<li>' . $msg . '</li>';
+        }
+        echo '</ol>';
     }
-    echo '</ul>';
-}
-?>
+    ?>
 
-<?php if (isset($result)) { ?>
-    <div style="background-color: #dfd; padding: 10px;">
-        <?php echo 'Miesięczna rata: ' . number_format($result, 2) . ' PLN'; ?>
+    <?php if (isset($result)): ?>
+    <div style="margin-top: 1em; padding: 1em; border-radius: 5px; background-color: #ff0; width:25em;">
+        <?php echo 'Miesięczna rata: ' . number_format($result, 2) . ' zł'; ?>
     </div>
-<?php } ?>
+    <?php endif; ?>
+</div>
 
 </body>
 </html>
-
