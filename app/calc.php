@@ -39,3 +39,4 @@ if (empty($errors)) {
 
 // Wywołanie widoku
 include 'calc_view.php';
+
